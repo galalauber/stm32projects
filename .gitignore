@@ -63,3 +63,5 @@ Drivers
 .settings/
 stm32*
 sys*
+*.launch
+startup*
