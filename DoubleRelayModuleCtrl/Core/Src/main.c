@@ -62,7 +62,9 @@ void SystemClock_Config(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 int RelayModuleCtrl(int relay, int output);
-void RelayModuleConfig(void );
+void RelayModuleConfig(void);
+void Inicializa_GPIO_C13_btnB1_HAL(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -101,6 +103,7 @@ int main(void)
   RelayModuleConfig();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  Inicializa_GPIO_C13_btnB1_HAL();
 
   /* USER CODE END 2 */
 
@@ -112,9 +115,16 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	/* uncomment to change relay state to lv1*/
+	if (!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13)){
+		RelayModuleCtrl(RELAY_1, RELAY_ON);
+		RelayModuleCtrl(RELAY_2, RELAY_OFF);
+	} else {
+		RelayModuleCtrl(RELAY_1, RELAY_OFF);
+		RelayModuleCtrl(RELAY_2, RELAY_ON);
+	}
+	HAL_Delay(200);
 	  /* RelayModuleCtrl(RELAY_1, RELAY_ON); */
 	  /* RelayModuleCtrl(RELAY_2, RELAY_ON); */
-
   }
   /* USER CODE END 3 */
 }
@@ -284,6 +294,19 @@ void RelayModuleConfig(void ) {
 	HAL_GPIO_Init(RELAY_2_PORT, &Relay2_Struct);
 
 }
+
+void Inicializa_GPIO_C13_btnB1_HAL(void)
+{
+	GPIO_InitTypeDef GPIO_C13_Init_Struct = {0};
+
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+
+	GPIO_C13_Init_Struct.Pin = GPIO_PIN_13;
+	GPIO_C13_Init_Struct.Mode = GPIO_MODE_INPUT;
+	GPIO_C13_Init_Struct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOC, &GPIO_C13_Init_Struct);
+}
+
 /* USER CODE END 4 */
 
 /**
