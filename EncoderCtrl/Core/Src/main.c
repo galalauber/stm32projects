@@ -116,19 +116,23 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  aVal = HAL_GPIO_ReadPin(portA, pinA);
-	  if (aVal != pinALast) {
+	  if ( (aVal != pinALast) && (aVal != 0) ) {
 		  if (HAL_GPIO_ReadPin(portB, pinB) != aVal) {
 			  if (encoderPosCount >= maxEncVal)
+			  {
 				  encoderPosCount = minEncVal;
-			  else
+			  } else {
 				  encoderPosCount++;
+			  }
 			  bCW = 1;
 		  } else {
-			  bCW = 0;
 			  if (encoderPosCount <= minEncVal)
+			  {
 				  encoderPosCount = maxEncVal;
-			  else
+			  } else {
 				  encoderPosCount--;
+			  }
+			  bCW = 0;
 		  }
 		  HAL_UART_Transmit(&huart2, msgRotacao, sizeof(msgRotacao), 50);
 		  if (bCW)
