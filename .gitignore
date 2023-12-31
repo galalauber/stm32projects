@@ -21,6 +21,7 @@
 *.a
 *.la
 *.lo
+*.pack
 
 # Shared objects (inc. Windows DLLs)
 *.dll
@@ -65,3 +66,9 @@ stm32*
 sys*
 *.launch
 startup*
+
+#compacted files
+*.zip
+*.rar
+*.7z
+
